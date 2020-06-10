@@ -28,7 +28,6 @@ _testmain.go
 *.test
 .proc
 *.conf
-consul-esm
 
 # IDE files
 *.iml

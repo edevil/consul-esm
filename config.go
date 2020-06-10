@@ -30,13 +30,12 @@ type Config struct {
 	Tag     string
 	KVPath  string
 
-	NodeMeta                  map[string]string
-	Interval                  time.Duration
-	DeregisterAfter           time.Duration
-	CheckUpdateInterval       time.Duration
-	CoordinateUpdateInterval  time.Duration
-	NodeHealthRefreshInterval time.Duration
-	NodeReconnectTimeout      time.Duration
+	NodeMeta                 map[string]string
+	Interval                 time.Duration
+	DeregisterAfter          time.Duration
+	CheckUpdateInterval      time.Duration
+	CoordinateUpdateInterval time.Duration
+	NodeReconnectTimeout     time.Duration
 
 	HTTPAddr      string
 	Token         string
@@ -48,9 +47,6 @@ type Config struct {
 	TLSServerName string
 
 	PingType string
-
-	DisableRedundantStatusUpdates bool
-	DisableCoordinateUpdates      bool
 
 	Telemetry lib.TelemetryConfig
 
@@ -97,15 +93,12 @@ func DefaultConfig() *Config {
 		NodeMeta: map[string]string{
 			"external-node": "true",
 		},
-		Interval:                      10 * time.Second,
-		DeregisterAfter:               72 * time.Hour,
-		CheckUpdateInterval:           5 * time.Minute,
-		CoordinateUpdateInterval:      10 * time.Second,
-		NodeHealthRefreshInterval:     1 * time.Hour,
-		NodeReconnectTimeout:          72 * time.Hour,
-		PingType:                      PingTypeUDP,
-    DisableRedundantStatusUpdates: false,
-    DisableCoordinateUpdates:      false,
+		Interval:                 10 * time.Second,
+		DeregisterAfter:          72 * time.Hour,
+		CheckUpdateInterval:      5 * time.Minute,
+		CoordinateUpdateInterval: 10 * time.Second,
+		NodeReconnectTimeout:     72 * time.Hour,
+		PingType:                 PingTypeUDP,
 	}
 }
 
@@ -157,9 +150,6 @@ type HumanConfig struct {
 	TLSServerName flags.StringValue `mapstructure:"tls_server_name"`
 
 	PingType flags.StringValue `mapstructure:"ping_type"`
-
-	DisableRedundantStatusUpdates flags.BoolValue `mapstructure:"disable_redundant_status_updates"`
-	DisableCoordinateUpdates      flags.BoolValue `mapstructure:"disable_cooridinate_updates"`
 
 	Telemetry []Telemetry `mapstructure:"telemetry"`
 }
@@ -324,8 +314,6 @@ func MergeConfig(dst *Config, src *HumanConfig) error {
 	src.KeyFile.Merge(&dst.KeyFile)
 	src.TLSServerName.Merge(&dst.TLSServerName)
 	src.PingType.Merge(&dst.PingType)
-	src.DisableRedundantStatusUpdates.Merge(&dst.DisableRedundantStatusUpdates)
-	src.DisableCoordinateUpdates.Merge(&dst.DisableCoordinateUpdates)
 
 	// We check on parse time that there is at most one
 	if len(src.Telemetry) != 0 {
